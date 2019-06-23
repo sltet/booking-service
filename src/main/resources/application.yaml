@@ -1,0 +1,11 @@
+server:
+  port: 8000
+
+
+logging:
+  level:
+    web: debug
+
+spring:
+  http:
+    log-request-details: true
