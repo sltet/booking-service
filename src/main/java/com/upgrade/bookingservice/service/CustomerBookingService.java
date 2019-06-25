@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -52,7 +53,7 @@ public class CustomerBookingService implements BookingService {
         LocalDateTime arrivalDate = LocalDateTime.of(start, Constants.DEFAULT_CHECK_IN_TIME);
         LocalDateTime departureDate = LocalDateTime.of(end, Constants.DEFAULT_CHECK_IN_TIME);
 
-        return bookingRepository.findAvailabilitiesBetween(arrivalDate, departureDate);
+        return bookingRepository.findAvailabilitiesBetween(arrivalDate, departureDate).subscribeOn(Schedulers.elastic());
     }
 
     Function<CustomerReservation, Booking> convertReservationToBooking = reservation -> Booking.builder()

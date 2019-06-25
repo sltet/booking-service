@@ -4,7 +4,6 @@ import com.upgrade.bookingservice.exception.UnprocessableEntityException;
 import com.upgrade.bookingservice.model.Booking;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -56,7 +55,6 @@ public class InMemoryBookingRepository implements BookingRepository {
     @Override
     public Flux<LocalDate> findAvailabilitiesBetween(LocalDateTime arrivalDate, LocalDateTime departureDate) {
         return Flux.fromStream(getDatesBetween(arrivalDate, departureDate))
-                .subscribeOn(Schedulers.elastic())
                 .filter(localDateTime -> !bookings.containsKey(localDateTime))
                 .map(LocalDateTime::toLocalDate);
     }
