@@ -94,8 +94,8 @@ public class CustomerReservationServiceTest {
                 .status(Status.COMPLETED)
                 .build();
 
-        Mockito.when(bookingService.createBooking(reservationRequest)).thenReturn(Mono.just(reservationRequest));
         Mockito.when(customerReservationRepository.save(reservationRequest)).thenReturn(expectedReservation);
+        Mockito.when(bookingService.createBooking(expectedReservation)).thenReturn(Mono.just(expectedReservation));
 
         Mono<CustomerReservation> reservation = customerReservationService.create(reservationRequest);
 
