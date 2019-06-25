@@ -26,9 +26,9 @@ public class CustomerReservationService implements ReservationService {
     @Override
     synchronized public Mono<CustomerReservation> create(CustomerReservation reservation) {
         return Mono.just(reservation)
-                .flatMap(bookingService::createBooking)
                 .doOnNext(res -> res.setStatus(Status.COMPLETED))
                 .map(customerReservationRepository::save)
+                .flatMap(bookingService::createBooking)
                 .switchIfEmpty(Mono.error(new UnprocessableEntityException("Requested range of dates is unavailable")));
     }
 

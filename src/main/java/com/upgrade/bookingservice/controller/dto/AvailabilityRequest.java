@@ -16,11 +16,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AvailabilityRequest {
 
-    @ApiModelProperty(value = "start date", example = "2020-10-05")
+    @ApiModelProperty(value = "start date", example = "2019-07-05")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate from = LocalDate.now();
 
-    @ApiModelProperty(value = "end date", example = "2020-10-10")
+    @ApiModelProperty(value = "end date", example = "2019-07-15")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate to = LocalDate.now().plusMonths(Constants.MAXIMAL_RESERVATION_REQUEST_MONTHS);
 

@@ -16,11 +16,11 @@ public class ReservationDTO {
 
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @ApiModelProperty(required = true, example = "2020-10-05")
+    @ApiModelProperty(required = true, example = "2019-07-05")
     private LocalDate arrivalDate;
 
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @ApiModelProperty(required = true, example = "2020-10-10")
+    @ApiModelProperty(required = true, example = "2019-07-08")
     private LocalDate departureDate;
 }

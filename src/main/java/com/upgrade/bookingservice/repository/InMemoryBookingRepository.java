@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -34,9 +35,15 @@ public class InMemoryBookingRepository implements BookingRepository {
                     throw new UnprocessableEntityException(String.format("Requested range of dates is in conflict on day %s", localDateTime.toLocalDate()));
                 });
 
-        Stream<LocalDateTime> datesBetween = getDatesBetween(booking.getArrivalDate(), booking.getDepartureDate());
-        datesBetween.forEach(bookings::remove);
-        datesBetween.forEach(date -> this.bookings.put(date, booking.getReservationId()));
+        Iterator it = bookings.entrySet().iterator();
+        while (it.hasNext())
+        {
+            Map.Entry<LocalDateTime, Long> item = (Map.Entry<LocalDateTime, Long>)it.next();
+            if(item.getValue().equals(booking.getReservationId())) {
+                it.remove();
+            }
+        }
+        getDatesBetween(booking.getArrivalDate(), booking.getDepartureDate()).forEach(date -> this.bookings.put(date, booking.getReservationId()));
         return booking;
     }
 
