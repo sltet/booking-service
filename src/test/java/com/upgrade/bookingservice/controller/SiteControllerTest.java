@@ -18,7 +18,6 @@ import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.util.MimeType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Hooks;
 
@@ -57,8 +56,8 @@ public class SiteControllerTest {
                 .bindToController(new SiteController(validator, bookingService))
                 .httpMessageCodecs((configurer) -> {
                     CodecConfigurer.DefaultCodecs defaults = configurer.defaultCodecs();
-                    defaults.jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, new MimeType[0]));
-                    defaults.jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper, new MimeType[0]));
+                    defaults.jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper));
+                    defaults.jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper));
                 })
                 .validator(validator)
                 .configureClient()
