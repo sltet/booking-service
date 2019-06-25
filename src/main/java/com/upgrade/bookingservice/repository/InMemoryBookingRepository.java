@@ -20,13 +20,14 @@ public class InMemoryBookingRepository implements BookingRepository {
     private Map<LocalDateTime, Long> bookings = new HashMap<>();
 
     @Override
-    public void save(Booking booking) {
+    public Booking save(Booking booking) {
         getDatesBetween(booking.getArrivalDate(), booking.getDepartureDate())
                 .forEach(date -> this.bookings.put(date, booking.getReservationId()));
+        return booking;
     }
 
     @Override
-    public void update(Booking booking) {
+    public Booking update(Booking booking) {
         getDatesInConflict(booking.getReservationId(), booking.getArrivalDate(), booking.getDepartureDate())
                 .findAny()
                 .ifPresent(localDateTime -> {
@@ -36,17 +37,13 @@ public class InMemoryBookingRepository implements BookingRepository {
         Stream<LocalDateTime> datesBetween = getDatesBetween(booking.getArrivalDate(), booking.getDepartureDate());
         datesBetween.forEach(bookings::remove);
         datesBetween.forEach(date -> this.bookings.put(date, booking.getReservationId()));
+        return booking;
     }
 
     @Override
     public void cancel(Booking booking) {
         getDatesBetween(booking.getArrivalDate(), booking.getDepartureDate())
                 .forEach(bookings::remove);
-    }
-
-    @Override
-    public Long findBookingReservationByDate(LocalDateTime bookingDate) {
-        return bookings.get(bookingDate);
     }
 
     @Override
@@ -66,11 +63,6 @@ public class InMemoryBookingRepository implements BookingRepository {
     public boolean isRangeAvailable(LocalDateTime arrival, LocalDateTime departure) {
         return getDatesBetween(arrival, departure)
                 .noneMatch(this::contains);
-    }
-
-    @Override
-    public void removeByDate(LocalDateTime bookingDate) {
-        this.bookings.remove(bookingDate);
     }
 
     private Stream<LocalDateTime> getDatesBetween(LocalDateTime arrival, LocalDateTime departure) {
