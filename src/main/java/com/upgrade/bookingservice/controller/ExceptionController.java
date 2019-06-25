@@ -1,6 +1,6 @@
 package com.upgrade.bookingservice.controller;
 
-import com.upgrade.bookingservice.exception.ErrorDTO;
+import com.upgrade.bookingservice.controller.dto.ErrorDTO;
 import com.upgrade.bookingservice.exception.NotFoundException;
 import com.upgrade.bookingservice.exception.UnprocessableEntityException;
 import lombok.RequiredArgsConstructor;
