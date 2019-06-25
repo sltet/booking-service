@@ -56,7 +56,7 @@ public class InMemoryBookingRepository implements BookingRepository {
 
     @Override
     public boolean contains(LocalDateTime bookingDate) {
-        return this.bookings.containsKey(bookingDate);
+        return bookings.containsKey(bookingDate);
     }
 
     @Override
