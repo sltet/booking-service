@@ -1,7 +1,7 @@
 package com.upgrade.bookingservice.controller;
 
 import com.upgrade.bookingservice.controller.dto.AvailabilityRequest;
-import com.upgrade.bookingservice.service.ReservationService;
+import com.upgrade.bookingservice.service.BookingService;
 import com.upgrade.bookingservice.validator.AvailabilityValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +22,12 @@ import java.util.List;
 public class SiteController implements SiteApi {
 
     private final AvailabilityValidator availabilityValidator;
-    private final ReservationService reservationService;
+    private final BookingService bookingService;
 
     @Override
     @GetMapping("/availabilities")
     public Mono<ResponseEntity<List<LocalDate>>> getAvailabilities(@Valid AvailabilityRequest availabilityRequest) {
-        return reservationService.findAvailabilitiesBetween(availabilityRequest.getFrom(), availabilityRequest.getTo())
+        return bookingService.findAvailabilitiesBetween(availabilityRequest.getFrom(), availabilityRequest.getTo())
                 .collectList()
                 .map(ResponseEntity::ok);
     }

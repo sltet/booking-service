@@ -1,10 +1,8 @@
 package com.upgrade.bookingservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.upgrade.bookingservice.controller.dto.AvailabilityRequest;
-import com.upgrade.bookingservice.service.ReservationService;
+import com.upgrade.bookingservice.service.BookingService;
 import com.upgrade.bookingservice.validator.AvailabilityValidator;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +37,7 @@ public class SiteControllerTest {
     private AvailabilityValidator validator;
 
     @MockBean
-    private ReservationService reservationService;
+    private BookingService bookingService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -56,7 +54,7 @@ public class SiteControllerTest {
         Hooks.onOperatorDebug();
 
         this.webClient = WebTestClient
-                .bindToController(new SiteController(validator, reservationService))
+                .bindToController(new SiteController(validator, bookingService))
                 .httpMessageCodecs((configurer) -> {
                     CodecConfigurer.DefaultCodecs defaults = configurer.defaultCodecs();
                     defaults.jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, new MimeType[0]));
@@ -80,7 +78,7 @@ public class SiteControllerTest {
                                                     .build();
 
         Mockito.when(validator.supports(any())).thenReturn(true);
-        Mockito.when(reservationService.findAvailabilitiesBetween(start, end)).thenReturn(Flux.just(firstAvailableDate, secondAvailableDate));
+        Mockito.when(bookingService.findAvailabilitiesBetween(start, end)).thenReturn(Flux.just(firstAvailableDate, secondAvailableDate));
 
         this.webClient.get().uri("/site/availabilities", availabilityRequest)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
